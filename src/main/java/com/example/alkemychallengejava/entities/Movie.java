@@ -17,14 +17,14 @@ public class Movie {
     private Long id;
     private String image;
     private String title;
-    private Date creationDate;
+    private String creationDate;
     private Integer rating;
     @ManyToMany(mappedBy = "moviesAssociated", fetch = FetchType.LAZY)
     private List<Character> charactersAssociated;
 
-    public Movie(Long id, String image, String title, Date creationDate, Integer rating, List<Character> charactersAssociated) {
+    public Movie(Long id, String image, String title, String creationDate, Integer rating, List<Character> charactersAssociated) {
         if(!(rating >= 1 && rating <= 5)){
-            throw new IllegalArgumentException("La calificación debe estar entre el 1 y el 5");
+            throw new IllegalArgumentException("The rating must be between 1 and 5");
         }
 
         this.id = id;
