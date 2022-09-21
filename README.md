@@ -65,7 +65,7 @@ Deberán existir las operaciones básicas de creación, edición y eliminación 
 
 5. Detalle de Personaje
 
-En el detalle deberán listarse todos los atributos del personaje, como así también sus películas o
+En el detalle deberán listarse todos los atributos del character, como así también sus películas o
 series relacionadas.
 
 6. Búsqueda de Personajes
