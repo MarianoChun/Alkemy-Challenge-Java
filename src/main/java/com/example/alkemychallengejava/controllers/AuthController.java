@@ -14,10 +14,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
 
 /**
  *  Controlador que lleva a cabo la autenticación utilizando JWT
@@ -25,10 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
  *  Por medio de un AuthenticationManager se autentican las credenciales, las cuales
  *  son usuario y password que llegan por POST en el cuerpo de la request
  *
- *  Si las credenciales osn válidas, se genera el token JWT como response
+ *  Si las credenciales son válidas, se genera el token JWT como response
  */
 @AllArgsConstructor
-@RestController
+@RestController()
+@RequestMapping(path = "api/auth")
 public class AuthController {
 
     private final AuthenticationManager authManager;
@@ -36,7 +36,7 @@ public class AuthController {
     private final PasswordEncoder encoder;
     private final JwtTokenUtil jwtTokenUtil;
 
-    @PostMapping("/api/auth/login")
+    @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest loginRequest){
 
         Authentication authentication = authManager.authenticate(
@@ -50,7 +50,7 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(jwt));
     }
 
-    @PostMapping("/api/auth/register")
+    @PostMapping("/register")
     public ResponseEntity<MessageResponse> register(@RequestBody RegisterRequest signUpRequest) {
 
         // Check 1: username
