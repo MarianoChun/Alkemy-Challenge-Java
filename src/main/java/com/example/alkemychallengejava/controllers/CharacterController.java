@@ -1,10 +1,14 @@
 package com.example.alkemychallengejava.controllers;
 
+import com.example.alkemychallengejava.DTO.CharacterDTO;
 import com.example.alkemychallengejava.entities.Character;
 import com.example.alkemychallengejava.services.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @RestController
 public class CharacterController {
@@ -13,8 +17,12 @@ public class CharacterController {
     CharacterService characterService;
 
     @GetMapping("/api/characters")
-    public ResponseEntity<Iterable<Character>> getCharacters(){
-        return ResponseEntity.ok(characterService.getAllCharacters());
+    public ResponseEntity<Iterable<CharacterDTO>> getCharacters(){
+
+        Stream<CharacterDTO> characterDTOStream = StreamSupport.stream(characterService.getAllCharacters().spliterator(),false)
+                .map(character -> new CharacterDTO(character.getImage(), character.getName()));
+
+        return ResponseEntity.ok(characterDTOStream.toList());
     }
 
     @PostMapping("/api/characters")

@@ -20,6 +20,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public Iterable<Character> getAllCharacters() {
+
         if(characterRepository.findAll().isEmpty()){
             return new ArrayList<>();
         }
