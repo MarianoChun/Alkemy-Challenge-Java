@@ -20,9 +20,15 @@ public class CharacterController {
     public ResponseEntity<Iterable<CharacterDTO>> getCharacters(){
 
         Stream<CharacterDTO> characterDTOStream = StreamSupport.stream(characterService.getAllCharacters().spliterator(),false)
-                .map(character -> new CharacterDTO(character.getImage(), character.getName()));
+                .map(character -> new CharacterDTO(character.getId(), character.getImage(), character.getName()));
 
         return ResponseEntity.ok(characterDTOStream.toList());
+    }
+
+    @GetMapping("/api/characters/{id}")
+    public ResponseEntity<Character> getCharacterById(@PathVariable Long id){
+
+        return ResponseEntity.ok(characterService.getCharacter(id));
     }
 
     @PostMapping("/api/characters")

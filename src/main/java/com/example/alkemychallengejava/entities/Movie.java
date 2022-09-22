@@ -1,5 +1,6 @@
 package com.example.alkemychallengejava.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,8 +18,10 @@ public class Movie {
     private Long id;
     private String image;
     private String title;
+    @Column(name = "creation_date")
     private String creationDate;
     private Integer rating;
+    @JsonIgnore
     @ManyToMany(mappedBy = "moviesAssociated", fetch = FetchType.LAZY)
     private List<Character> charactersAssociated;
 
