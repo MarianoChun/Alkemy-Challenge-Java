@@ -1,6 +1,7 @@
 package com.example.alkemychallengejava.services;
 
 import com.example.alkemychallengejava.entities.Character;
+import com.example.alkemychallengejava.exception.ErrorMessage;
 import com.example.alkemychallengejava.repository.CharacterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public Character saveCharacter(Character character) {
         if(character.getId() != null){
-            throw new IllegalArgumentException("Error: The character to create has an id");
+            throw new IllegalArgumentException(ErrorMessage.CHARACTER_HAS_ID.getMessage());
         }
 
         return characterRepository.save(character);
@@ -47,11 +48,11 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public Character modifyCharacter(Character character) {
         if(character.getId() == null){
-            throw new IllegalArgumentException("Error: The character to modify don't have an id");
+            throw new IllegalArgumentException(ErrorMessage.CHARACTER_HAS_NO_ID.getMessage());
         }
 
         if(characterRepository.findById(character.getId()).isEmpty()){
-            throw new IllegalArgumentException("Error: The character to modify doesn't exists");
+            throw new IllegalArgumentException(ErrorMessage.CHARACTER_NOT_FOUND.getMessage());
         }
 
         return characterRepository.save(character);
@@ -60,7 +61,7 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public void deleteCharacter(Long id) {
         if(characterRepository.findById(id).isEmpty()){
-            throw new IllegalArgumentException("Error: The character to delete doesn't exists/was already deleted");
+            throw new IllegalArgumentException((ErrorMessage.CHARACTER_NOT_FOUND.getMessage()));
         }
 
         characterRepository.deleteById(id);
