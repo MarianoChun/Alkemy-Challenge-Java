@@ -10,7 +10,7 @@ public interface CharacterService {
 
     Character saveCharacter(Character character);
 
-    Character modifyCharacter(Character character);
+    Character updateCharacter(Character character);
 
     void deleteCharacter(Long id);
 

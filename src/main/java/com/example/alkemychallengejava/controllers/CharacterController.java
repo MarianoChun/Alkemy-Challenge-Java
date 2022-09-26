@@ -38,12 +38,16 @@ public class CharacterController {
 
     @PutMapping("/api/characters")
     public ResponseEntity<Character> updateCharacter(@RequestBody Character character){
-        return ResponseEntity.ok(characterService.modifyCharacter(character));
+        return ResponseEntity.ok(characterService.updateCharacter(character));
     }
 
     @DeleteMapping("/api/characters/{id}")
     public ResponseEntity<Character> deleteCharacter(@PathVariable Long id){
-        characterService.deleteCharacter(id);
+       try {
+           characterService.deleteCharacter(id);
+       }catch (IllegalArgumentException e){
+           return ResponseEntity.notFound().build();
+       }
 
         return ResponseEntity.noContent().build();
     }

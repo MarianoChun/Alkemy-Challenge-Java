@@ -8,8 +8,7 @@ import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class CharacterDTO implements Serializable {
     private Long id;
     private String image;

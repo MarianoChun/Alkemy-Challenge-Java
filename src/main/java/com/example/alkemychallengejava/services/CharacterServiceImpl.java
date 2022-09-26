@@ -3,6 +3,8 @@ package com.example.alkemychallengejava.services;
 import com.example.alkemychallengejava.entities.Character;
 import com.example.alkemychallengejava.exception.ErrorMessage;
 import com.example.alkemychallengejava.repository.CharacterRepository;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,6 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Autowired
     CharacterRepository characterRepository;
-
     @Override
     public Character getCharacter(Long id) {
         Optional<Character> characterOptional = characterRepository.findById(id);
@@ -37,7 +38,7 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public Character saveCharacter(Character character) {
+    public Character saveCharacter(@NonNull Character character) {
         if(character.getId() != null){
             throw new IllegalArgumentException(ErrorMessage.CHARACTER_HAS_ID.getMessage());
         }
@@ -46,7 +47,7 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public Character modifyCharacter(Character character) {
+    public Character updateCharacter(@NonNull Character character) {
         if(character.getId() == null){
             throw new IllegalArgumentException(ErrorMessage.CHARACTER_HAS_NO_ID.getMessage());
         }
