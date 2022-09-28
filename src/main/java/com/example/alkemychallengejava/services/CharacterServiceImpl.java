@@ -1,6 +1,7 @@
 package com.example.alkemychallengejava.services;
 
 import com.example.alkemychallengejava.entities.Character;
+import com.example.alkemychallengejava.entities.Movie;
 import com.example.alkemychallengejava.exception.ErrorMessage;
 import com.example.alkemychallengejava.repository.CharacterRepository;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class CharacterServiceImpl implements CharacterService {
@@ -67,4 +70,41 @@ public class CharacterServiceImpl implements CharacterService {
 
         characterRepository.deleteById(id);
     }
+
+    @Override
+    public Character findByName(String name) {
+         Optional<Character> characterOptional = characterRepository.findAll().stream()
+                .filter(character -> character.getName().equals(name))
+                .findFirst();
+
+         return characterOptional.orElse(null);
+    }
+
+    @Override
+    public Iterable<Character> filterByAge(Integer age) {
+        Stream<Character> characterOptional = characterRepository.findAll().stream()
+                .filter(character -> character.getAge().equals(age));
+
+        return characterOptional.toList();
+    }
+
+    @Override
+    public Iterable<Character> filterByWeight(Double weight) {
+        Stream<Character> characterOptional = characterRepository.findAll().stream()
+                .filter(character -> character.getWeight().equals(weight));
+
+        return characterOptional.toList();
+    }
+
+    @Override
+    public Iterable<Character> filterByMovie(Long idMovie) {
+//        Stream<Character> characterOptional = characterRepository.findAll().stream()
+//                .filter(character -> character.getMoviesAssociated());
+
+        return null;//characterOptional.toList();
+    }
+
+//    private boolean characterHasMovie(){
+//
+//    }
 }

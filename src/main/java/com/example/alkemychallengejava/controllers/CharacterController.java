@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -23,6 +24,33 @@ public class CharacterController {
                 .map(character -> new CharacterDTO(character.getId(), character.getImage(), character.getName()));
 
         return ResponseEntity.ok(characterDTOStream.toList());
+    }
+
+    @GetMapping(value = "/api/characters", params = "age")
+    public  ResponseEntity<Iterable<Character>> filterByAge(@RequestParam Integer age){
+        return ResponseEntity.ok(characterService.filterByAge(age));
+    }
+
+    @GetMapping(value = "/api/characters", params = "weight")
+    public ResponseEntity<Iterable<Character>> filterByWeight(@RequestParam Double weight){
+        return ResponseEntity.ok(characterService.filterByWeight(weight));
+    }
+
+//    @GetMapping(value = "/api/characters", params = "idMovie")
+//    public ResponseEntity<Iterable<CharacterDTO>> filterByMovie(){
+//        List<Character> characterList = characterService.filterByMovie();
+//
+//        return ResponseEntity.ok(characterDTOStream.toList());
+//    }
+
+    @GetMapping(value = "/api/characters", params = "name")
+    public ResponseEntity<Character> getCharacterByName(@RequestParam String name){
+        Character character = characterService.findByName(name);
+        if(character == null){
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(character);
     }
 
     @GetMapping("/api/characters/{id}")
