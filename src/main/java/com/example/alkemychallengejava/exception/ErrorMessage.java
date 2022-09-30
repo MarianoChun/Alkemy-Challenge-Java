@@ -1,13 +1,11 @@
 package com.example.alkemychallengejava.exception;
 
-import java.text.MessageFormat;
-
 
 public enum ErrorMessage {
-    CHARACTER_NOT_FOUND("Error: The character was not found"),
-    CHARACTER_ALREADY_EXISTS(("Error: The character already exists")),
-    CHARACTER_HAS_ID(("Error: The character has an id")),
-    CHARACTER_HAS_NO_ID(("Error: The character has no id"));
+    RESOURCE_NOT_FOUND("Error: The resource was not found"),
+    RESOURCE_ALREADY_EXISTS(("Error: The resource already exists")),
+    RESOURCE_HAS_ID(("Error: The resource has an id")),
+    RESOURCE_HAS_NO_ID(("Error: The resource has no id"));
 
     private final String message;
 

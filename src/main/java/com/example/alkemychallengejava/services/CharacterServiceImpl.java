@@ -1,16 +1,13 @@
 package com.example.alkemychallengejava.services;
 
 import com.example.alkemychallengejava.entities.Character;
-import com.example.alkemychallengejava.entities.Movie;
 import com.example.alkemychallengejava.exception.ErrorMessage;
 import com.example.alkemychallengejava.repository.CharacterRepository;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -43,7 +40,7 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public Character saveCharacter(@NonNull Character character) {
         if(character.getId() != null){
-            throw new IllegalArgumentException(ErrorMessage.CHARACTER_HAS_ID.getMessage());
+            throw new IllegalArgumentException(ErrorMessage.RESOURCE_HAS_ID.getMessage());
         }
 
         return characterRepository.save(character);
@@ -52,11 +49,11 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public Character updateCharacter(@NonNull Character character) {
         if(character.getId() == null){
-            throw new IllegalArgumentException(ErrorMessage.CHARACTER_HAS_NO_ID.getMessage());
+            throw new IllegalArgumentException(ErrorMessage.RESOURCE_HAS_NO_ID.getMessage());
         }
 
         if(characterRepository.findById(character.getId()).isEmpty()){
-            throw new IllegalArgumentException(ErrorMessage.CHARACTER_NOT_FOUND.getMessage());
+            throw new IllegalArgumentException(ErrorMessage.RESOURCE_NOT_FOUND.getMessage());
         }
 
         return characterRepository.save(character);
@@ -65,7 +62,7 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public void deleteCharacter(Long id) {
         if(characterRepository.findById(id).isEmpty()){
-            throw new IllegalArgumentException((ErrorMessage.CHARACTER_NOT_FOUND.getMessage()));
+            throw new IllegalArgumentException((ErrorMessage.RESOURCE_NOT_FOUND.getMessage()));
         }
 
         characterRepository.deleteById(id);
