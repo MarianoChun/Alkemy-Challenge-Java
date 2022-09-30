@@ -1,5 +1,6 @@
 package com.example.alkemychallengejava.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,8 +20,8 @@ public class Genre {
     private String name;
     private String image;
 
-    @OneToMany(targetEntity = Movie.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "genre_fk", referencedColumnName = "id")
+
+    @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL)
     private List<Movie> moviesAssociated;
 
 }
