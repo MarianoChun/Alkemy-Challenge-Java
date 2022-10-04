@@ -5,10 +5,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -26,7 +24,7 @@ public class Movie {
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "creation_date")
-    private Date creationDate;
+    private String creationDate;
 
     private Integer rating;
 
@@ -39,7 +37,7 @@ public class Movie {
     @JoinColumn(name = "genre_fk")
     private Genre genre;
 
-    public Movie(Long id, String image, String title, Date creationDate, Integer rating, List<Character> charactersAssociated, Genre genre) {
+    public Movie(Long id, String image, String title, String creationDate, Integer rating, List<Character> charactersAssociated, Genre genre) {
         if(!(rating >= 1 && rating <= 5)){
             throw new IllegalArgumentException("The rating must be between 1 and 5");
         }

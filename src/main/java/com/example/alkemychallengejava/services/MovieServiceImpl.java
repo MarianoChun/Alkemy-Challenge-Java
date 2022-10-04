@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -83,12 +84,12 @@ public class MovieServiceImpl implements MovieService{
     public Iterable<Movie> sortByCreationDate(String sortType) {
         if(sortType.equals("ASC")){
             return movieRepository.findAll().stream()
-                    .sorted((movie1, movie2) -> (int) (movie1.getCreationDate().getTime() - movie2.getCreationDate().getTime()))
+                    .sorted((movie1, movie2) -> (int) (Date.valueOf(movie1.getCreationDate()).getTime() - Date.valueOf(movie2.getCreationDate()).getTime()))
                     .toList();
         }
         if (sortType.equals("DESC")) {
             return movieRepository.findAll().stream()
-                    .sorted((movie1, movie2) -> (int) (movie2.getCreationDate().getTime() - movie1.getCreationDate().getTime()))
+                    .sorted((movie1, movie2) -> (int) (Date.valueOf(movie2.getCreationDate()).getTime() - Date.valueOf(movie1.getCreationDate()).getTime()))
                     .toList();
         }
 
