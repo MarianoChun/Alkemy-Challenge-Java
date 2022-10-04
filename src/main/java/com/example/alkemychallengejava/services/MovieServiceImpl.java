@@ -4,11 +4,13 @@ import com.example.alkemychallengejava.entities.Genre;
 import com.example.alkemychallengejava.entities.Movie;
 import com.example.alkemychallengejava.exception.ErrorMessage;
 import com.example.alkemychallengejava.repository.MovieRepository;
+import com.example.alkemychallengejava.utils.DateParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -82,17 +84,21 @@ public class MovieServiceImpl implements MovieService{
 
     @Override
     public Iterable<Movie> sortByCreationDate(String sortType) {
+        DateParser dateParser = new DateParser();
+
         if(sortType.equals("ASC")){
             return movieRepository.findAll().stream()
-                    .sorted((movie1, movie2) -> (int) (Date.valueOf(movie1.getCreationDate()).getTime() - Date.valueOf(movie2.getCreationDate()).getTime()))
+                    .sorted((movie1, movie2) -> (int) (dateParser.convertStringToDate(movie1.getCreationDate()).getTime()
+                            - dateParser.convertStringToDate(movie2.getCreationDate()).getTime()))
                     .toList();
         }
         if (sortType.equals("DESC")) {
             return movieRepository.findAll().stream()
-                    .sorted((movie1, movie2) -> (int) (Date.valueOf(movie2.getCreationDate()).getTime() - Date.valueOf(movie1.getCreationDate()).getTime()))
+                    .sorted((movie1, movie2) -> (int) (dateParser.convertStringToDate(movie2.getCreationDate()).getTime() -
+                            dateParser.convertStringToDate(movie1.getCreationDate()).getTime()))
                     .toList();
         }
 
-        throw new IllegalArgumentException("Insert a valid sortTyp: ASC or DESC");
+        throw new IllegalArgumentException("Insert a valid sort type: ASC or DESC");
     }
 }
