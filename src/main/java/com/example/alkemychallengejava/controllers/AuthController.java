@@ -7,6 +7,9 @@ import com.example.alkemychallengejava.security.payload.JwtResponse;
 import com.example.alkemychallengejava.security.payload.LoginRequest;
 import com.example.alkemychallengejava.security.payload.MessageResponse;
 import com.example.alkemychallengejava.security.payload.RegisterRequest;
+import com.example.alkemychallengejava.utils.EmailSender;
+import com.mailjet.client.errors.MailjetException;
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +31,7 @@ import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
  */
 @AllArgsConstructor
 @RestController()
-@RequestMapping(path = "api/auth")
+@RequestMapping(path = "/api/auth")
 public class AuthController {
 
     private final AuthenticationManager authManager;
@@ -49,7 +52,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<MessageResponse> register(@RequestBody RegisterRequest signUpRequest) {
+    public ResponseEntity<MessageResponse> register(@RequestBody RegisterRequest signUpRequest) throws MailjetSocketTimeoutException, MailjetException {
 
         // Check 1: username
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -72,6 +75,8 @@ public class AuthController {
 
         userRepository.save(user);
 
+        EmailSender emailSender = new EmailSender();
+        emailSender.sendEmail(signUpRequest.getEmail(), signUpRequest.getUsername());
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 }

@@ -70,7 +70,11 @@
 			<version>4.8.0</version>
 			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>com.mailjet</groupId>
+			<artifactId>mailjet-client</artifactId>
+			<version>4.2.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
