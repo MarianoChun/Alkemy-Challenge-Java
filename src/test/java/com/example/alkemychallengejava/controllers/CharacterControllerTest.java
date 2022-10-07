@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -32,24 +33,24 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class CharacterControllerTest {
 
-    @Autowired
+
     @Mock
     CharacterService characterService;
 
-    @Autowired
-    @Mock
-    CharacterRepository characterRepository;
-
-    @Autowired
     @InjectMocks
     CharacterController characterController;
 
+    ArrayList<Character> characters;
+
+    @BeforeEach
+    void setUp() {
+        characters = new ArrayList<>();
+        characters.add(new Character(null, "image1.jpg", "Mickey", 30, 70.0, "He is funny", new HashSet<>()));
+        characters.add(new Character(null, "image2.jpg", "Pluto", 10, 89.0, "He is big", new HashSet<>()));
+    }
+
     @Test
     void getCharactersTest() {
-        ArrayList<Character> characters = new ArrayList<>();
-        characters.add(new Character(null, "image1.jpg", "Mickey", 30, 70.0, "He is funny", new ArrayList<>()));
-        characters.add(new Character(null, "image2.jpg", "Pluto", 10, 89.0, "He is big", new ArrayList<>()));
-
         when(characterService.getAllCharacters()).thenReturn(characters);
         List<CharacterDTO> characterDTOListExpected = getCharacterDTOStream().toList();
 
@@ -70,7 +71,7 @@ class CharacterControllerTest {
 
     @Test
     void getCharacterByIdTest() {
-        Character character = new Character(3L,"pluto.jpg","pluto",8, 79.0, "A funny dog", new ArrayList<>());
+        Character character = new Character(3L,"pluto.jpg","pluto",8, 79.0, "A funny dog", new HashSet<>());
         when(characterService.getCharacter(3L)).thenReturn(character);
 
         assertEquals(character, characterController.getCharacterById(3L).getBody());
@@ -88,7 +89,7 @@ class CharacterControllerTest {
 
     @Test
     void createCharacterTest() {
-        Character character = new Character(10L,"Goofy.jpg","Goofy",42, 82.0, "A funny dog", new ArrayList<>());
+        Character character = new Character(10L,"Goofy.jpg","Goofy",42, 82.0, "A funny dog", new HashSet<>());
         when(characterService.saveCharacter(any(Character.class))).thenReturn(character);
 
         assertEquals(character, characterController.createCharacter(character).getBody());
@@ -104,14 +105,14 @@ class CharacterControllerTest {
     @Test
     void createCharacterWithIdTest() {
         when(characterService.saveCharacter(any(Character.class))).thenThrow(new IllegalArgumentException());
-        Character character = new Character(10L,"Goofy.jpg","Goofy",42, 82.0, "A funny dog", new ArrayList<>());
+        Character character = new Character(10L,"Goofy.jpg","Goofy",42, 82.0, "A funny dog", new HashSet<>());
 
         assertThrowsExactly(IllegalArgumentException.class ,() -> characterController.createCharacter(character));
     }
 
     @Test
     void updateCharacterTest() {
-        Character character = new Character(10L,"Goofy.jpg","Goofy",42, 82.0, "A funny dog", new ArrayList<>());
+        Character character = new Character(10L,"Goofy.jpg","Goofy",42, 82.0, "A funny dog", new HashSet<>());
         when(characterService.updateCharacter(character)).thenReturn(character);
 
         assertEquals(character, characterController.updateCharacter(character).getBody());
@@ -119,7 +120,7 @@ class CharacterControllerTest {
 
     @Test
     void updateCharacterNotFoundTest() {
-        Character character = new Character(100L,"Winnie.jpg","Winnie",45, 80.0, "A funny bear", new ArrayList<>());
+        Character character = new Character(100L,"Winnie.jpg","Winnie",45, 80.0, "A funny bear", new HashSet<>());
         when(characterService.updateCharacter(character)).thenThrow(new IllegalArgumentException());
 
         assertThrowsExactly(IllegalArgumentException.class ,() -> characterController.updateCharacter(character));
@@ -127,7 +128,7 @@ class CharacterControllerTest {
 
     @Test
     void updateCharacterWithNullIdTest() {
-        Character character = new Character(null,"Winnie.jpg","Winnie",45, 80.0, "A funny bear", new ArrayList<>());
+        Character character = new Character(null,"Winnie.jpg","Winnie",45, 80.0, "A funny bear", new HashSet<>());
         when(characterService.updateCharacter(character)).thenThrow(new IllegalArgumentException());
 
         assertThrowsExactly(IllegalArgumentException.class ,() -> characterController.updateCharacter(character));

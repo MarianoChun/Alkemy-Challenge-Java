@@ -31,7 +31,7 @@ import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
  */
 @AllArgsConstructor
 @RestController()
-@RequestMapping(path = "/api/auth")
+@RequestMapping(path = "api/auth")
 public class AuthController {
 
     private final AuthenticationManager authManager;

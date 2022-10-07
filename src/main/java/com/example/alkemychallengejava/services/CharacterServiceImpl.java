@@ -1,6 +1,7 @@
 package com.example.alkemychallengejava.services;
 
 import com.example.alkemychallengejava.entities.Character;
+import com.example.alkemychallengejava.entities.Movie;
 import com.example.alkemychallengejava.exception.ErrorMessage;
 import com.example.alkemychallengejava.repository.CharacterRepository;
 import lombok.NonNull;
@@ -8,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -16,6 +19,9 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Autowired
     CharacterRepository characterRepository;
+
+    @Autowired
+    MovieService movieService;
     @Override
     public Character getCharacter(Long id) {
         Optional<Character> characterOptional = characterRepository.findById(id);
@@ -42,6 +48,23 @@ public class CharacterServiceImpl implements CharacterService {
         if(character.getId() != null){
             throw new IllegalArgumentException(ErrorMessage.RESOURCE_HAS_ID.getMessage());
         }
+
+        if(findByName(character.getName()) != null){
+            throw new IllegalArgumentException(ErrorMessage.RESOURCE_ALREADY_EXISTS.getMessage());
+        }
+
+        character.setName(character.getName().toLowerCase());
+        character.setMoviesAssociated(character.getMoviesAssociated()
+                .stream()
+                .map(movie -> {
+                    Movie actualMovie = movie;
+                    if(movieService.existsMovie(actualMovie.getTitle())){
+                        actualMovie = movieService.findByTitle(movie.getTitle());
+                    }
+                    actualMovie.addCharacterAssociated(character);
+                    return actualMovie;
+                })
+                .collect(Collectors.toSet()));
 
         return characterRepository.save(character);
     }
@@ -95,13 +118,12 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public Iterable<Character> filterByMovie(Long idMovie) {
-//        Stream<Character> characterOptional = characterRepository.findAll().stream()
-//                .filter(character -> character.getMoviesAssociated());
+        Movie movie = movieService.findById(idMovie);
+        if(movie == null){
+            throw new RuntimeException(ErrorMessage.RESOURCE_NOT_FOUND.getMessage());
+        }
 
-        return null;//characterOptional.toList();
+        return movie.getCharactersAssociated();
     }
 
-//    private boolean characterHasMovie(){
-//
-//    }
 }

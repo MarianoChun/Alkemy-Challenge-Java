@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -16,33 +17,35 @@ public class CharacterController {
     @Autowired
     CharacterService characterService;
 
-    @GetMapping("/api/characters")
+    @GetMapping("api/characters")
     public ResponseEntity<Iterable<CharacterDTO>> getCharacters(){
 
-        Stream<CharacterDTO> characterDTOStream = StreamSupport.stream(characterService.getAllCharacters().spliterator(),false)
-                .map(character -> new CharacterDTO(character.getId(), character.getImage(), character.getName()));
+        Stream<CharacterDTO> characterDTOStream = getCharacterDTOStream(characterService.getAllCharacters());
 
         return ResponseEntity.ok(characterDTOStream.toList());
     }
 
-    @GetMapping(value = "/api/characters", params = "age")
+    private Stream<CharacterDTO> getCharacterDTOStream(Iterable<Character> characters) {
+        return StreamSupport.stream(characters.spliterator(), false)
+                .map(character -> new CharacterDTO(character.getId(), character.getImage(), character.getName()));
+    }
+
+    @GetMapping(value = "api/characters", params = "age")
     public  ResponseEntity<Iterable<Character>> filterByAge(@RequestParam Integer age){
         return ResponseEntity.ok(characterService.filterByAge(age));
     }
 
-    @GetMapping(value = "/api/characters", params = "weight")
+    @GetMapping(value = "api/characters", params = "weight")
     public ResponseEntity<Iterable<Character>> filterByWeight(@RequestParam Double weight){
         return ResponseEntity.ok(characterService.filterByWeight(weight));
     }
 
-//    @GetMapping(value = "/api/characters", params = "idMovie")
-//    public ResponseEntity<Iterable<CharacterDTO>> filterByMovie(){
-//        List<Character> characterList = characterService.filterByMovie();
-//
-//        return ResponseEntity.ok(characterDTOStream.toList());
-//    }
+    @GetMapping(value = "/api/characters", params = "idMovie")
+    public ResponseEntity<Iterable<CharacterDTO>> filterByMovie(@RequestParam Long idMovie){
+        return ResponseEntity.ok(getCharacterDTOStream(characterService.filterByMovie(idMovie)).toList());
+    }
 
-    @GetMapping(value = "/api/characters", params = "name")
+    @GetMapping(value = "api/characters", params = "name")
     public ResponseEntity<Character> getCharacterByName(@RequestParam String name){
         Character character = characterService.findByName(name);
         if(character == null){
@@ -52,23 +55,23 @@ public class CharacterController {
         return ResponseEntity.ok(character);
     }
 
-    @GetMapping("/api/characters/{id}")
+    @GetMapping("api/characters/{id}")
     public ResponseEntity<Character> getCharacterById(@PathVariable Long id){
 
         return ResponseEntity.ok(characterService.getCharacter(id));
     }
 
-    @PostMapping("/api/characters")
+    @PostMapping("api/characters")
     public ResponseEntity<Character> createCharacter(@RequestBody Character character){
         return ResponseEntity.ok(characterService.saveCharacter(character));
     }
 
-    @PutMapping("/api/characters")
+    @PutMapping("api/characters")
     public ResponseEntity<Character> updateCharacter(@RequestBody Character character){
         return ResponseEntity.ok(characterService.updateCharacter(character));
     }
 
-    @DeleteMapping("/api/characters/{id}")
+    @DeleteMapping("api/characters/{id}")
     public ResponseEntity<Character> deleteCharacter(@PathVariable Long id){
        try {
            characterService.deleteCharacter(id);

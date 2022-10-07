@@ -17,4 +17,18 @@ public class GenreServiceImpl implements GenreService{
     public Genre getGenreById(Long id) {
         return genreRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Genre getGenreByName(String name) {
+        return genreRepository.findAll().stream()
+                .filter(genre -> genre.getName().equals(name))
+                .findFirst().
+                orElse(null);
+    }
+
+    @Override
+    public boolean genreExists(String name) {
+        return genreRepository.findAll().stream()
+                .anyMatch(genre -> genre.getName().equals(name));
+    }
 }

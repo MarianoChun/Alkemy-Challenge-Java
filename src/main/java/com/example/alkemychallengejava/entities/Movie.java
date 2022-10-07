@@ -7,11 +7,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @Entity
+@Table(
+        uniqueConstraints = @UniqueConstraint(columnNames = {"title"})
+)
 public class Movie {
 
     @Id
@@ -30,24 +36,45 @@ public class Movie {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "moviesAssociated", fetch = FetchType.LAZY)
-    private List<Character> charactersAssociated;
+    private Set<Character> charactersAssociated = new HashSet<>();
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "genre_fk")
     private Genre genre;
 
-    public Movie(Long id, String image, String title, String creationDate, Integer rating, List<Character> charactersAssociated, Genre genre) {
+    public Movie(Long id, String image, String title, String creationDate, Integer rating, Set<Character> charactersAssociated, Genre genre) {
         if(!(rating >= 1 && rating <= 5)){
             throw new IllegalArgumentException("The rating must be between 1 and 5");
         }
 
         this.id = id;
         this.image = image;
-        this.title = title;
+        this.title = title.toLowerCase();
         this.creationDate = creationDate;
         this.rating = rating;
         this.charactersAssociated = charactersAssociated;
         this.genre = genre;
+    }
+
+    public void setTitle(String title) {
+        this.title = title.toLowerCase();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return title.equals(movie.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title);
+    }
+
+    public void addCharacterAssociated(Character character){
+        charactersAssociated.add(character);
     }
 }

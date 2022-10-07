@@ -17,8 +17,11 @@ public interface MovieService {
 
     Movie findByTitle(String title);
 
+    Movie findById(Long idMovie);
     Iterable<Movie> filterByGenre(Long idGenre);
 
     Iterable<Movie> sortByCreationDate(String sortType);
+
+    boolean existsMovie(String title);
 
 }

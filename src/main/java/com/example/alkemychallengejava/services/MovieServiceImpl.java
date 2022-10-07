@@ -42,6 +42,16 @@ public class MovieServiceImpl implements MovieService{
             throw new IllegalArgumentException(ErrorMessage.RESOURCE_HAS_ID.getMessage());
         }
 
+        if(existsMovie(movie.getTitle())){
+            throw new IllegalArgumentException(ErrorMessage.RESOURCE_ALREADY_EXISTS.getMessage());
+        }
+
+        String movieGenreName = movie.getGenre().getName();
+
+        if(genreService.genreExists(movieGenreName)){
+            movie.setGenre(genreService.getGenreByName(movieGenreName));
+        }
+
         return movieRepository.save(movie);
     }
 
@@ -76,6 +86,11 @@ public class MovieServiceImpl implements MovieService{
     }
 
     @Override
+    public Movie findById(Long idMovie) {
+        return movieRepository.findById(idMovie).orElse(null);
+    }
+
+    @Override
     public Iterable<Movie> filterByGenre(Long idGenre) {
         Genre genre = genreService.getGenreById(idGenre);
 
@@ -100,5 +115,10 @@ public class MovieServiceImpl implements MovieService{
         }
 
         throw new IllegalArgumentException("Insert a valid sort type: ASC or DESC");
+    }
+
+    @Override
+    public boolean existsMovie(String title) {
+        return findByTitle(title) != null;
     }
 }

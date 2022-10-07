@@ -7,10 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Genre {
@@ -22,6 +26,14 @@ public class Genre {
 
 
     @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL)
-    private List<Movie> moviesAssociated;
+    private Set<Movie> moviesAssociated = new HashSet<>();
 
+    public Genre(String name, String image) {
+        this.name = name.toLowerCase();
+        this.image = image;
+    }
+
+    public void setName(String name) {
+        this.name = name.toLowerCase();
+    }
 }
