@@ -8,10 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,9 +49,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * Configuracion global de CORS para toda la aplicacion
-     */
     @Bean
     CorsConfigurationSource corsConfigurationSource()
     {
@@ -66,14 +61,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-    // ========================= OVERRIDE: SOBREESCRIBIR FUNCIONALIDAD SECURITY POR DEFECTO ======
-//    @Bean
-//    public AuthenticationManager configure(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-//
-//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-//        return authenticationConfiguration.getAuthenticationManager();
-//    }
 
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
