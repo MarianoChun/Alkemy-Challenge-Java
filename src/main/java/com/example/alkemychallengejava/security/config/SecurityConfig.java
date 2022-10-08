@@ -53,7 +53,7 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource()
     {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("http://localhost:8080"));
+        configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS", "DELETE", "PUT", "PATCH"));
         configuration.setAllowedHeaders(List.of("Access-Control-Allow-Origin", "X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization"));
         configuration.setAllowCredentials(true);
@@ -66,11 +66,12 @@ public class SecurityConfig {
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         // Cross-Site Request Forgery CSRF
         // CORS (Cross-origin resource sharing)
-        http.cors().and().csrf().disable()
+        http.cors().and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**", "/").permitAll()
-                .anyRequest().authenticated();
+                .authorizeRequests().antMatchers("/api/auth/**", "/", "/swagger-ui/**", "/swagger-ui.html", "/v2/**", "/webjars/**", "/swagger-resources/**").permitAll()
+                .anyRequest().authenticated()
+                .and().csrf().disable();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();

@@ -123,3 +123,6 @@ o en su defecto crear una variable de entorno MYSQL_PASSWORD con la contraseña 
 Para contar con la funcionalidad de envío de mail de confirmación al momento de registrar un nuevo usuario, se debe
 sobreescribir las variables MAILJET_API_KEY y MAILJET_SECRET_KEY con los respectivos datos de su cuenta de Mailjet o en su defecto
 crear variables de entorno que contengan dichos datos.
+#### Swagger
+Para acceder a la documentación en Swagger, se debe acceder al siguiente link estando la app corriendo
+http://localhost:8080/swagger-ui/
