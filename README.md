@@ -118,7 +118,7 @@ Los tests pueden realizarse utilizando JUnit y Mockito.
 ### Uso
 #### MySQL
 Para poder conectar a la base de datos a MySQL se debe sobreescribir en application.properties la variable ${MYSQL_PASSWORD}
-o en su defecto crear una variable de entorno MYSQL_PASSWORD con la contraseña de mysql.
+o en su defecto crear una variable de entorno MYSQL_PASSWORD con la contraseña de su cuenta mysql.
 #### Mailjet - Envío de mail de confirmación
 Para contar con la funcionalidad de envío de mail de confirmación al momento de registrar un nuevo usuario, se debe
 sobreescribir las variables MAILJET_API_KEY y MAILJET_SECRET_KEY con los respectivos datos de su cuenta de Mailjet o en su defecto
