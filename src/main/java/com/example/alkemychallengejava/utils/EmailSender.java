@@ -16,7 +16,7 @@ public class EmailSender {
     MailjetResponse response;
 
     public EmailSender() {
-        client = new MailjetClient(System.getenv("MAILIJET_API_KEY"), System.getenv("MAILIJET_SECRET_KEY"), new ClientOptions("v3.1"));
+        client = new MailjetClient(System.getenv("MAILJET_API_KEY"), System.getenv("MAILJET_SECRET_KEY"), new ClientOptions("v3.1"));
     }
 
     public void sendEmail(String receiverEmail, String receiverName) throws MailjetSocketTimeoutException, MailjetException {
