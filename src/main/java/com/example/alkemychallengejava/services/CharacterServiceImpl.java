@@ -27,7 +27,7 @@ public class CharacterServiceImpl implements CharacterService {
         Optional<Character> characterOptional = characterRepository.findById(id);
 
         if(characterOptional.isEmpty()){
-            return null;
+            return new Character();
         }
 
         return characterOptional.get();
@@ -97,7 +97,7 @@ public class CharacterServiceImpl implements CharacterService {
                 .filter(character -> character.getName().equals(name))
                 .findFirst();
 
-         return characterOptional.orElse(null);
+         return characterOptional.orElse(new Character());
     }
 
     @Override

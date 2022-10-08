@@ -27,7 +27,7 @@ public class MovieServiceImpl implements MovieService{
     @Override
     public Movie getMovie(Long id) {
         Optional<Movie> movieOptional = movieRepository.findById(id);
-        return movieOptional.orElse(null);
+        return movieOptional.orElse(new Movie());
     }
 
     @Override
@@ -82,7 +82,7 @@ public class MovieServiceImpl implements MovieService{
         Optional<Movie> movie = movieRepository.findAll().stream()
                 .filter(actualMovie -> actualMovie.getTitle().equals(title)).findFirst();
 
-        return movie.orElse(null);
+        return movie.orElse(new Movie());
     }
 
     @Override

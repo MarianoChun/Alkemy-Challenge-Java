@@ -15,7 +15,7 @@ public class GenreServiceImpl implements GenreService{
 
     @Override
     public Genre getGenreById(Long id) {
-        return genreRepository.findById(id).orElse(null);
+        return genreRepository.findById(id).orElse(new Genre());
     }
 
     @Override
@@ -23,7 +23,7 @@ public class GenreServiceImpl implements GenreService{
         return genreRepository.findAll().stream()
                 .filter(genre -> genre.getName().equals(name))
                 .findFirst().
-                orElse(null);
+                orElse(new Genre());
     }
 
     @Override
