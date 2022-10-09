@@ -128,4 +128,5 @@ Para acceder a la documentación en Swagger, se debe acceder al siguiente link e
 http://localhost:8080/swagger-ui/
 #### Postman
 Para acceder a la colección de endpoints en Postman, clickea el siguiente boton para forkearla.
+
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/18697537-a0618c8f-0d35-4884-95db-3bbfa558b8a6?action=collection%2Ffork&collection-url=entityId%3D18697537-a0618c8f-0d35-4884-95db-3bbfa558b8a6%26entityType%3Dcollection%26workspaceId%3D2245a3c9-3b7d-4f2c-884c-d24fdcc6649d)
